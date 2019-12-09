@@ -99,12 +99,13 @@ def get_dataset(
     version=None,
     data_dir=None,
 ):
-    if dataset_name not in DATA_REGISTRY:
-        raise DatasetNotFoundError(dataset_name)
+    base_dataset_name = dataset_name.split("/")[0]
+    if base_dataset_name not in DATA_REGISTRY:
+        raise DatasetNotFoundError(base_dataset_name)
 
-    preprocess_registry = DATA_REGISTRY[dataset_name]
+    preprocess_registry = DATA_REGISTRY[base_dataset_name]
     if preprocess_name not in preprocess_registry:
-        raise PreprocessNotFoundError(dataset_name, preprocess_name)
+        raise PreprocessNotFoundError(base_dataset_name, preprocess_name)
     return Dataset(
         dataset_name,
         preprocess_registry[preprocess_name],
